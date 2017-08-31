@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: iot-laravel
+  labels:
+    communication-layer: laravel
+spec:
+  replicas: 1
+  selector:
+    communication-layer: laravel
+  template:
+    metadata:
+      labels:
+        communication-layer: laravel
+    spec:
+      containers:
+      - name: laravel
+        image: ${IMG}
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    communication-layer: laravel
+  name: iot-laravel-service
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    name: port-80
+  selector:
+    communication-layer: laravel
